@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: py_deploy_staging
+    restart: always
+    ports:
+      - "5193:5000"
+    environment:
+      - ENV=staging
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://postgres:7Scillan_@db:5432/ocr_db
+    depends_on:
+      - db
+    networks:
+      - ocr_network
+    volumes:
+      - ./uploads:/BISMILLAH/uploads
+      - ./output:/BISMILLAH/output
+
+  db:
+    image: postgres:15-alpine
+    container_name: ocr_db_staging
+    restart: always
+    environment:
+      - POSTGRES_DB=ocr_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=7Scillan_
+    networks:
+      - ocr_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+networks:
+  ocr_network:
+    driver: bridge
