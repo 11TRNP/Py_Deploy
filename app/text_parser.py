@@ -1618,14 +1618,8 @@ class TextParser:
                 mem["pelabuhan"] = fallback.group(3)
                 mem["panjang"] = fallback.group(4)
 
-        # =========================
-        # 🔥 TIPE
-        # =========================
         mem["tipe"] = get(r'Tipe kapal\s*[:\-]?\s*"?([A-Z])"?')
 
-        # =========================
-        # 🔥 GELADAK (ANTI NGEBABLAS)
-        # =========================
         m1 = re.search(
             r'di bawah sisi atas pelat baja geladak utama pada sisi kapal',
             text,
@@ -1640,29 +1634,17 @@ class TextParser:
         )
         mem["geladakeng"] = m2.group(0) if m2 else None
 
-        # =========================
-        # 🔥 NON KAYU
-        # =========================
         mem["nonkayu"] = get(
             r'selain dari kayu\s+(\d{2,4})\s*mm'
         )
 
-        # =========================
-        # 🔥 KAYU (FIX NO GROUP ERROR)
-        # =========================
         if re.search(r'Untuk lambung timbul kayu\s*-\s*mm', text, re.IGNORECASE):
             mem["kayu"] = "0"
         else:
             mem["kayu"] = get(r'Untuk lambung timbul kayu\s*(\d+)') or "0"
 
-        # =========================
-        # 🔥 DIUKUR
-        # =========================
         mem["diukur"] = get(r'diukur berada\s+(\d+)\s*mm')
 
-        # =========================
-        # 🔥 LOAD LINE (PASTI KEAMBIL SEKARANG)
-        # =========================
         mem["TS"] = get(r'Tropik\s+(\d{2,4})')
         mem["S66"] = get(r'Musim panas\s+(\d{2,4})')
         mem["SW"] = get(r'Musim dingin\s+(\d{2,4})')
@@ -1677,10 +1659,6 @@ class TextParser:
         mem["LSLWNA"] = get(r'Musim dingin Atlantik Utara kayu\s+(\d{1,4})') or "0"
 
         return mem
-
-
-    # ----------------------- BATAS SUCI -------------------------
-    
     
     # EXTRACT MEMO1
     def _extract_pembaruanke(self, text): # EXTRACT PEMBARUAN KE (HULL)
