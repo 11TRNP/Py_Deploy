@@ -266,8 +266,10 @@ def sync_by_nosert():
                 )
                 logger.warning(
                     f"[SYNC MISMATCH] nosert_expected={nosert_expected_clean} "
-                    f"!= nosert_ocr={nosert_ocr_clean}"
+                    f"!= nosert_ocr={nosert_ocr_clean} | Query: {nosert_clean}"
                 )
+            
+            logger.info(f"[SYNC RESULT] nosert_match: {nosert_match}, status: {validation_status}")
 
             validation = {
                 "nosert_match": nosert_match,
